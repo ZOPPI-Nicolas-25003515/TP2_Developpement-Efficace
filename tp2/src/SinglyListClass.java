@@ -1,7 +1,6 @@
 public class SinglyListClass {
 
     private Node header;
-    private long size;
 
     public Node getHeader() {
         return header;
@@ -18,14 +17,15 @@ public class SinglyListClass {
     }
 
     public int size () {
-        header = getHeader();
-        if (header == null) {
+        Node node = this.header;
+        if (node == null) {
             return 0;
         }
         int count = 1;
         while (true) {
-            if (header.getNext() != null) {
+            if (node.getNext() != null) {
                 ++count;
+                node = node.getNext();
             }
             else break;
         }
@@ -58,11 +58,11 @@ public class SinglyListClass {
 
     }
 
-    public Integer first() {
+    public Node first() {
         if(isEmpty()) {
             return null;
         }else {
-            return header.getElement();
+            return header;
         }
     }
 
@@ -105,6 +105,31 @@ public class SinglyListClass {
             header = header.getNext();
             return header;
         }
+    }
+
+    public Node findBeforeLast() {
+        if (this.size() <= 2) return header;
+        Node node = this.header;
+        while (node.next.next != null) {
+            node = node.next;
+        }
+        return node;
+    }
+
+    public void invertList() {
+        Node previous = null;
+        Node current = header;
+
+        while (current != null) {
+            Node next = current.getNext();
+
+            current.setNext(previous);
+
+            previous = current;
+            current = next;
+        }
+
+        header = previous;
     }
 
     private static class Node {
@@ -158,9 +183,16 @@ public class SinglyListClass {
         maListe.addFirst(9);
         System.out.println("On ajoute un 9 au debut : " + maListe.getHeader() + ", Le premier chiffre est bien " + maListe.first() + "\n");
         System.out.println("to String : " + maListe.toString() + "\n");
+        System.out.println(maListe2.isEmpty() + "\n");
         maListe2.addFirst(485);
         System.out.println(maListe2.toString() + "\n");
+        maListe2.addFirst(584);
+        System.out.println(maListe2 + "\n");
+        System.out.println("Taille de la première liste : " + maListe.size() + "\nTaille de la seconde liste : " + maListe2.size() + "\n");
+        System.out.println(maListe.findBeforeLast().getElement());
+
+        System.out.println("Liste non-inversée : \n" + maListe);
+        maListe.invertList();
+        System.out.println("Liste inversée : \n" + maListe);
     }
-
-
-}
+    }

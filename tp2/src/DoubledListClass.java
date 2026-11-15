@@ -1,3 +1,5 @@
+import java.util.Objects;
+
 public class DoubledListClass {
     private DNode header;
 
@@ -14,6 +16,17 @@ public class DoubledListClass {
         return this.header;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (!(o instanceof DoubledListClass that)) return false;
+        return Objects.equals(header, that.header);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(header);
+    }
+
     public int size () {
         DNode node = this.header;
         if (node == null) {
@@ -22,6 +35,22 @@ public class DoubledListClass {
         int count = 1;
         while (true) {
             if (node.getNext() != null) {
+                ++count;
+                node = node.getNext();
+            }
+            else break;
+        }
+        return count;
+    }
+
+    public int size2 () {
+        DNode node = this.header;
+        if (node == null) {
+            return 0;
+        }
+        int count = 1;
+        while (true) {
+            if (node.getNext() != this.header) {
                 ++count;
                 node = node.getNext();
             }
@@ -155,6 +184,13 @@ public class DoubledListClass {
         public void setElement(Integer newElem) {
             element = newElem;
         }
+
+        @Override
+        public boolean equals(Object o) {
+            if (!(o instanceof DNode that)) return false;
+            return element.equals(that.element)
+                    && Objects.equals(next, that.next);
+        }
     }
 
     public static void main(String[] args) {
@@ -183,6 +219,37 @@ public class DoubledListClass {
         System.out.println(maListe2 + "\n");
         System.out.println("Taille de la première liste : " + maListe.size() + "\nTaille de la seconde liste : " + maListe2.size() + "\n");
         System.out.println(maListe.findBeforeLast());
+
+        DoubledListClass listeCirculaire = new DoubledListClass();
+        listeCirculaire.addLast(1);
+        listeCirculaire.addLast(2);
+        listeCirculaire.addLast(3);
+        listeCirculaire.addLast(4);
+        listeCirculaire.addLast(5);
+
+        listeCirculaire.findBeforeLast().getNext().setNext(listeCirculaire.getHeader());
+
+        System.out.println(listeCirculaire.size2());
+
+        DoubledListClass maListe3 = new DoubledListClass();
+        maListe3.addLast(1);
+        maListe3.addLast(2);
+        maListe3.addLast(3);
+        maListe3.addLast(4);
+        maListe3.addLast(5);
+        maListe3.addLast(6);
+
+        DoubledListClass maListe4 = new DoubledListClass();
+        maListe4.addLast(1);
+        maListe4.addLast(2);
+        maListe4.addLast(3);
+        maListe4.addLast(4);
+        maListe4.addLast(5);
+        maListe4.addLast(6);
+
+        System.out.println("Liste 3 : \n" + maListe3 + "\nListe 4 : \n" + maListe3);
+
+        System.out.println(maListe3.equals(maListe4));
 
         /*
         System.out.println("Liste non-inversée : \n" + maListe);
